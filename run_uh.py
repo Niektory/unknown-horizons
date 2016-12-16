@@ -355,6 +355,12 @@ def setup_fife():
 	else:
 		log().debug('Using fife version %s.%s.%s, at least %d.%d.%d required', fife_version_major, fife_version_minor, fife_version_patch, VERSION.REQUIRED_FIFE_MAJOR_VERSION, VERSION.REQUIRED_FIFE_MINOR_VERSION, VERSION.REQUIRED_FIFE_PATCH_VERSION)
 
+	# FIFE 0.4.0 changed the types of exceptions from RuntimeError to FIFE-specific types
+	# this line is needed for old FIFE exception handlers to work
+	# when all handlers are updated to use the new types it can be removed
+	# see issue #2583
+	fife.Exception.__bases__ = RuntimeError,
+
 def init_environment(use_fife):
 	"""Sets up everything.
 
